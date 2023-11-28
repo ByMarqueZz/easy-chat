@@ -1,24 +1,42 @@
-import { useEffect, useState } from 'react';
-import { Text, View, Dimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, ScrollView, Dimensions, Button } from 'react-native';
 import styles from './home_styles';
 import Chat from '../../components/chat/chat';
-import Users from '../../components/users/users';
 
-const Home = () => {
-    const [width, setWidth] = useState<number>(Dimensions.get('window').width);
-    const [height, setHeight] = useState<number>(Dimensions.get('window').height);
-    useEffect(() => {
-        Dimensions.addEventListener('change', ({ window: { width, height } }) => {
-            setWidth(width);
-            setHeight(height);
-        });
-    }, );
+import Card from './components/card/card';
+
+// const Home = () => {
+
+//     return (
+//         <View style={[styles.container, width >= 800 ? styles.containerLarge : styles.containerSmall]}>
+//             <Chat style={[width <= 800 ? styles.width_div2 : styles.chat]}></Chat>
+//         </View>
+//     );
+// };
+{/* <Button
+                title="GO TO Details"
+                onPress={() => navigation.navigate('Chat')}
+            /> */}
+
+const Home = ({ navigation }: any) => {
     return (
-        <View style={[styles.container, width >= 800 ? styles.containerLarge : styles.containerSmall]}>
-            <Users style={[width <= 800 ? styles.height_div1 : styles.users]}></Users>
-            <Chat style={[width <= 800 ? styles.width_div2 : styles.chat]}></Chat>
-        </View>
-    );
+        <ScrollView>
+            <View>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+            </View>
+        </ScrollView>
+    )
 };
 
 
