@@ -15,7 +15,7 @@ export default function InputChat(props:any) {
     }
     const handleButtonPress = () => {
         if (inputText !== '') {
-            props.messages.push(inputText);
+            props.sendMessage(inputText);
             setInputText('');
             setIsWriting(false);
         }

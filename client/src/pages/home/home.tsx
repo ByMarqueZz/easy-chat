@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, Dimensions, Button } from 'react-native';
+import { Text, View, ScrollView, Dimensions, Alert } from 'react-native';
 import styles from './home_styles';
 import Chat from '../../components/chat/chat';
 

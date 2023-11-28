@@ -16,8 +16,8 @@ export default function AppNavigation() {
                 },
                 // headerTintColor: '#fff', // Color del texto en la barra de navegación
             }}>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="Chat" component={Chat} />
+                <Stack.Screen name="Home" component={Home}/>
+                <Stack.Screen name="Chat" component={Chat}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
