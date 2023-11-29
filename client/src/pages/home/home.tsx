@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, ScrollView, Dimensions, Alert } from 'react-native';
-import styles from './home_styles';
-import Chat from '../../components/chat/chat';
+import RoomProps from '../../interfaces/roomProps';
+import { socket } from '../../components/socket/socket';
 
 import Card from './components/card/card';
+import store from '../../redux/store';
 
 // const Home = () => {
 
@@ -19,21 +20,40 @@ import Card from './components/card/card';
             /> */}
 
 const Home = ({ navigation }: any) => {
+    const [rooms, setRooms] = useState<RoomProps[]>([]);
+    useEffect(() => {
+        getRooms();
+        socket.on('reloadRoom', () => {
+            getRooms();
+        });
+    }, []);
+    function getRooms() {
+        fetch(store.getState().url + '/room/getRooms', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            setRooms(data.rooms);
+        })
+    }
     return (
         <ScrollView>
             <View>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
+                {
+                    rooms.map((room: RoomProps, index) => {
+                        return (
+                            <Card
+                                key={index}
+                                room={room}
+                                navigate={navigation}
+                                onPress={() => navigation.navigate('Chat', { room: room})}
+                            />
+                        )
+                    })
+                }
             </View>
         </ScrollView>
     )

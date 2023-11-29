@@ -1,17 +1,15 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import styles from './card_style'
-import { useNavigation } from '@react-navigation/native';
 
-export default function Card() {
-    const navigation = useNavigation();
+export default function Card(props:any) {
     function handleButtonPressImage() {
 
     }
 
     function handleButtonPressCard() {
-        navigation.navigate('Chat' as never)
-    }
+        props.onPress()
+      }
     return (
         <TouchableOpacity onPress={handleButtonPressCard}>
             <View
@@ -21,13 +19,13 @@ export default function Card() {
                     <TouchableOpacity onPress={handleButtonPressImage}>
                         <Image
                             style={styles.image}
-                            source={{ uri: 'https://media.istockphoto.com/id/1300972574/es/foto/líder-de-equipo-masculino-millennial-organiza-taller-virtual-con-empleados-en-línea.jpg?s=612x612&w=0&k=20&c=SWvvszsskWnHXCWq_g6S85iAPYt9rulJP2RPmcn4o0A=' }}
+                            source={{ uri: props.room.profile_picture ? props.room.profile_picture : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png' }}
                             resizeMode="contain"
                         />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.child2}>
-                    <Text style={styles.child2_text}>Hola</Text>
+                    <Text style={styles.child2_text}>{props.room.name}</Text>
                     <View style={styles.child2_imageView}>
                         <Image
                             source={require('../../../../assets/leer.png')}

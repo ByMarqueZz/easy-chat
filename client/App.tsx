@@ -13,9 +13,9 @@ export default function App() {
             console.log(`Mensaje del servidor: ${data}`);
         });
 
-        return () => {
-            socket.disconnect();
-        };
+        // return () => {
+        //     socket.disconnect();
+        // };
     }, []);
 
 

@@ -15,7 +15,7 @@ def register():
     if user is None:
         return jsonify({"message": "User already exists"}), 400
     else: 
-        return jsonify({"message": "User created successfully"}), 201
+        return jsonify({"user": user.serialize(), "message": "User created successfully"}), 200
     
 @app.route("/user/login", methods=["POST"])
 def login():

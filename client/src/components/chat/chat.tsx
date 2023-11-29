@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, ImageBackground, Keyboard, Platform, Alert } from 'react-native';
-import ChatProps from '../../interfaces/chatProps';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import style from './chat_style';
 import InputChat from '../inputChat/inputChat';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { socket } from '../socket/socket';
-import store from '../../redux/store';
 
-export default function Chat(props: ChatProps) {
+export default function Chat({route}) {
     const [messages, setMessages] = useState<string[]>([]);
     const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
 
     useEffect(() => {
-        socket.on('takeMessage', (data) => {
-            setMessages((prevMessages) => [...prevMessages, data]);
-        });
-
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {
@@ -36,8 +31,20 @@ export default function Chat(props: ChatProps) {
         };
     }, []);
 
-    function sendMessage(inputText: string) {
-        socket.emit('sendMessage', inputText);
+    useEffect(() => {
+        socket.on('takeMessage', (data) => {
+            const parsedData = JSON.parse(data);
+            if(route.params.room.id != parsedData.room.id) return
+            setMessages((prevMessages) => [...prevMessages, parsedData.username + ": " + parsedData.inputText]);
+        });
+    }, [])
+
+    async function sendMessage(inputText: string) {
+        const userJson = await AsyncStorage.getItem('user');
+        const storedUser = userJson ? JSON.parse(userJson) : null;
+        if(storedUser) {
+            socket.emit('sendMessage', {'inputText': inputText, 'room': route.params.room, 'username': storedUser.username});
+        }
     }
 
     return (
@@ -48,11 +55,10 @@ export default function Chat(props: ChatProps) {
             enableAutomaticScroll={Platform.OS === 'ios'}
             keyboardOpeningTime={0}
         >
-            <View style={props.style}>
+            <View>
                 <ImageBackground source={require('../../assets/background-chat.png')} resizeMode="cover" style={style.background}>
                     <ScrollView style={style.scrollView}>
                         <View style={style.chat}>
-                            <Text>Este es el chat</Text>
                             {
                                 messages.map((message, index) => {
                                     return (

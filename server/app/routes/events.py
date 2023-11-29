@@ -1,5 +1,7 @@
 import socketio
 from app import app
+import json
+
 
 sio = socketio.Server(cors_allowed_origins="*")
 app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
@@ -15,5 +17,10 @@ def disconnect(sid):
 
 @sio.event
 def sendMessage(sid, data):
-    print(f'Mensaje recibido de {sid}: {data}')
-    sio.emit('takeMessage', data)
+    print(f'Mensaje recibido de {sid}:')
+    json_data = json.dumps(data)
+    sio.emit('takeMessage', json_data)
+
+@sio.event
+def reloadRoom(sid):
+    sio.emit('reloadRoom')

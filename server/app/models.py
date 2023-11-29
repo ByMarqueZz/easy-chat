@@ -25,8 +25,16 @@ class User(db.Model):
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), index=True)
+    profile_picture = db.Column(db.String(255), index=True)
 
     users = db.relationship('User', secondary=user_room_association, back_populates='rooms')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'profile_picture': self.profile_picture,
+        }
 
     def __repr__(self):
         return f'<Room {self.name}>'
