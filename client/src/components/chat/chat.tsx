@@ -1,28 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { ScrollView, View, Text, ImageBackground, Keyboard, Platform, Alert } from 'react-native';
 import ChatProps from '../../interfaces/chatProps';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import style from './chat_style';
 import InputChat from '../inputChat/inputChat';
-import io from 'socket.io-client';
+import { socket } from '../socket/socket';
+import store from '../../redux/store';
 
 export default function Chat(props: ChatProps) {
     const [messages, setMessages] = useState<string[]>([]);
     const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
-    const [socket, setSocket] = useState<any>(null);
+
     useEffect(() => {
-        const newSocket = io('http://127.0.0.1:5000');
-        setSocket(newSocket);
-        newSocket.on('takeMessage', (data) => {
+        socket.on('takeMessage', (data) => {
             setMessages((prevMessages) => [...prevMessages, data]);
         });
-        return () => {
-            newSocket.disconnect();
-        };
-    }, []);
 
-
-    useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
             'keyboardDidShow',
             (event) => {

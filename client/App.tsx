@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/redux/store';
 import AppNavigation from './src/navigation/AppNavigation';
-import io from 'socket.io-client';
+import { socket } from './src/components/socket/socket';
 
 export default function App() {
-    const [socket, setSocket] = React.useState<any>(null);
+    const [user, setUser] = useState(null);
+    
     useEffect(() => {
-        const socket = io('http://127.0.0.1:5000');
-        setSocket(socket);
+        socket.connect();
         socket.on('message', (data) => {
             console.log(`Mensaje del servidor: ${data}`);
         });
@@ -17,6 +17,8 @@ export default function App() {
             socket.disconnect();
         };
     }, []);
+
+
     return (
         <Provider store={store}>
             <AppNavigation />

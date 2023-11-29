@@ -1,11 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import styles from './header_style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CustomHeader = () => {
+const CustomHeader = (props:any) => {
+    function handleLogout() {
+        AsyncStorage.removeItem('user');
+        props.loadUserFromStorage()
+    }
     return (
         <View style={styles.header}>
-            <Text>Hola</Text>
+            <TouchableOpacity onPress={handleLogout}>
+                        <Image
+                            style={styles.button}
+                            source={require('../../assets/logout.png')}
+                            resizeMode="contain"
+                        />
+                        </TouchableOpacity>
             <Text>Hola</Text>
             
         </View>
