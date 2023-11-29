@@ -40,6 +40,7 @@ export default StyleSheet.create({
     child2_imageView_text: {
         fontSize: 15,
         color: '#999',
+        maxWidth: '100%'
     },
     child2_imageView: {
         display: 'flex',

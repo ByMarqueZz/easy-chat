@@ -5,6 +5,8 @@ from app.controllers.userController import UserController
 def index():
     return "<h1>¡Hola, mundo!</h1>"
 
+
+
 @app.route("/user/newUser", methods=["POST"])
 def register():
     body = request.get_json()
@@ -19,7 +21,6 @@ def register():
     
 @app.route("/user/login", methods=["POST"])
 def login():
-    print("hola")
     body = request.get_json()
     username = body["username"]
     password = body["password"]

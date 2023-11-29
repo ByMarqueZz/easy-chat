@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 user_room_association = db.Table(
     'user_room_association',
@@ -39,3 +40,31 @@ class Room(db.Model):
     def __repr__(self):
         return f'<Room {self.name}>'
     
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    text = db.Column(db.String(255), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
+
+    user = db.relationship('User', backref=db.backref('messages', lazy=True))
+    room = db.relationship('Room', backref=db.backref('messages', lazy=True))
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'text': self.text,
+            'timestamp': self.timestamp.isoformat(),
+            'user': {
+                'id': self.user.id,
+                'username': self.user.username,
+            },
+            'room': {
+                'id': self.room.id,
+                'name': self.room.name,
+            }
+        }
+
+    def __repr__(self):
+        return f'<Message {self.text}>'

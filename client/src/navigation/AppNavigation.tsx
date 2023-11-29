@@ -18,7 +18,6 @@ export default function AppNavigation() {
             const userJson = await AsyncStorage.getItem('user');
             const storedUser = userJson ? JSON.parse(userJson) : null;
             setUser(storedUser);
-            console.log('Usuario cargado desde AsyncStorage', storedUser)
         } catch (error) {
             console.error('Error al cargar el usuario desde AsyncStorage', error);
         }

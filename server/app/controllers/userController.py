@@ -23,4 +23,3 @@ class UserController:
             return False
         if user.password == password:
             return user
-    

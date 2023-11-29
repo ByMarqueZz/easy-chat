@@ -12,10 +12,13 @@ export default function App() {
         socket.on('message', (data) => {
             console.log(`Mensaje del servidor: ${data}`);
         });
+        socket.on('disconnect', (reason) => {
+            socket.connect()
+        })
 
-        // return () => {
-        //     socket.disconnect();
-        // };
+        return () => {
+            socket.disconnect();
+        };
     }, []);
 
 
